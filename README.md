@@ -9,7 +9,7 @@ The game background comes from https://freepik.com.
 
 The song sonderland, is an original and is available on [Bandcamp](https://tyfee.bandcamp.com/track/sonderland)
 
-# Compiling it yourslef
+# Compiling it yourself
 
 In order to compile the source code into a binary file, you will need to have the Raylib installed and compile it as well, getting something like: 
 
