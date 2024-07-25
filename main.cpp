@@ -17,24 +17,28 @@ std::vector<Rectangle> bricks = {};
 std::vector<Rectangle> bricks1 = {};
 std::vector<Rectangle> bricks2 = {};
 std::vector<Rectangle> bricks3 = {};
+  int score = 0;
 
-
+ void upScore (){
+  score += 10;
+}
 int main(void){
     Color player_color = BLUE;
     int current_screen = 0;
 
     int current_option = 0;
     char* sound = "ON";
-    int score = 0;
+  
     int player_x = 500;
     int ball_x = 500;
     int ball_y = 400;
+    bool game = true;
     float speed = 15.0;
     float ball_speed = 15.0;
     float inclination = 0;
     // 0 = ascending, 1 = descending
     bool direction = 1;
-    
+   
     InitWindow(GetScreenWidth(), GetScreenHeight(), "RayBrick");
     InitAudioDevice();
     Texture bg = LoadTexture("assets/91657.png");
@@ -43,9 +47,35 @@ int main(void){
     PlaySound(bg_music);
     SetTargetFPS(60);  
     ToggleBorderlessWindowed();
+    SetExitKey(KEY_F12); 
+
+//yello red green blue
+
+for(int i = 0; i < 10; i++){
+       Rectangle rect = {100 + (i * 110), 0, 100, 50};
+        bricks.push_back(rect);
+}
+
+for(int i = 0; i < 10; i++){
+     Rectangle rect = {100 + (i * 110), 60, 100, 50};
+        bricks1.push_back(rect);
+}
+for(int i = 0; i < 10; i++){
+   Rectangle rect = {100 + (i * 110), 120, 100, 50};
+        bricks2.push_back(rect);
+}
+for(int i=0;i< 10;i++){
+    Rectangle rect = {100 + (i * 110), 180, 100, 50};
+     
+    bricks3.push_back(rect);
+    
+}
+
     while (!WindowShouldClose())
     {
 
+      Rectangle ball = {ball_x - 10, ball_y - 10 ,GetScreenHeight() / 15, GetScreenHeight() / 15};
+        Rectangle player = {player_x, GetScreenHeight() - 20, GetScreenWidth() / 5, 200};
 //main menu
 std::vector<char*> descriptions = {"Play a quick match of raybrick.", "Adjust sound and music settings.","Close the game! See you next time."};
 
@@ -114,12 +144,25 @@ break;
 
 
 // actual game
+
+ printf("Rectangles in bricks3:\n");
+        for (const Rectangle& rect : bricks3) {
+            printf("x: %.2f, y: %.2f, width: %.2f, height: %.2f\n",
+                   rect.x, rect.y, rect.width, rect.height);
+        }
       if (current_screen == 1){
+
+if(IsKeyPressed(KEY_ESCAPE)){
+game = !game;
+}
+
+
 
         if(IsSoundPlaying(bg_music)){
           StopSound(bg_music);
         }
               CloseAudioDevice();
+              if(game){
              ball_x += inclination;
         if(direction == 0){
             ball_y += ball_speed;
@@ -128,48 +171,110 @@ break;
         if(direction == 1){
             ball_y -= ball_speed;
         }
+              }
         BeginDrawing();
         ClearBackground(BLACK);
       DrawTextureEx(bg, (Vector2){55, 0}, 0, 0.25, WHITE);
       //bricks 
 
-for(int i = 0; i < row.size(); i++){
-    DrawRectangle(100 + (i * 110), 0, 100, 50, YELLOW);
-    DrawRectangleLines(100 + (i * 110), 0, 100, 50, WHITE);
+
+
+if(game){
+
+
+  //iterate through all the vectors and render the bricks based on their values
+
+  // draw the bricks fro the now populated vectors
+     for (auto it = bricks3.begin(); it != bricks3.end(); ) {
+            Rectangle rect = *it;
+            DrawRectangleRec(rect, BLUE);
+            DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
+
+//check if the ball rectangle has collided with any of the bricks, if so it removes the respective index from the vector.
+            bool brick_collision = CheckCollisionRecs(ball, rect);
+            if (brick_collision) {
+                it = bricks3.erase(it); // Remove the element and get the new iterator
+                printf("Collided\n");
+                   upScore();
+              direction = !direction;
+            } else {
+              //hasnt collided
+                ++it; 
+            }
+        }
+
+
+  for (auto it = bricks2.begin(); it != bricks2.end(); ) {
+            Rectangle rect = *it;
+            DrawRectangleRec(rect, YELLOW);
+            DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
+
+//check if the ball rectangle has collided with any of the bricks, if so it removes the respective index from the vector.
+            bool brick_collision = CheckCollisionRecs(ball, rect);
+            if (brick_collision) {
+                it = bricks2.erase(it); // Remove the element and get the new iterator
+                printf("Collided\n");
+                upScore();
+               direction = !direction;
+            } else {
+              //hasnt collided
+                ++it; 
+            }
+        }
+
+
+for (auto it = bricks1.begin(); it != bricks1.end(); ) {
+            Rectangle rect = *it;
+            DrawRectangleRec(rect, RED);
+            DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
+
+//check if the ball rectangle has collided with any of the bricks, if so it removes the respective index from the vector.
+            bool brick_collision = CheckCollisionRecs(ball, rect);
+            if (brick_collision) {
+                it = bricks1.erase(it); // Remove the element and get the new iterator
+                printf("Collided\n");
+                   upScore();
+               direction = !direction;
+            } else {
+              //hasnt collided
+                ++it; 
+            }
+        }
+
+for (auto it = bricks.begin(); it != bricks.end(); ) {
+            Rectangle rect = *it;
+            DrawRectangleRec(rect, GREEN);
+            DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
+
+//check if the ball rectangle has collided with any of the bricks, if so it removes the respective index from the vector.
+            bool brick_collision = CheckCollisionRecs(ball, rect);
+            if (brick_collision) {
+                it = bricks.erase(it); // Remove the element and get the new iterator
+                printf("Collided\n");
+                   upScore();
+               direction = !direction;
+            } else {
+              //hasnt collided
+                ++it; 
+            }
+        }
+
+
 }
 
-for(int i = 0; i < row1.size(); i++){
-    DrawRectangle(100 + (i * 110), 60, 100, 50, RED);
-    DrawRectangleLines(100 + (i * 110), 60, 100, 50, WHITE);
-}
-for(int i = 0; i < row2.size(); i++){
-   Rectangle rect = {100 + (i * 110), 120, 100, 50};
-  DrawRectangle(rect.x, rect.y, rect.width, rect.height,  GREEN);
-       DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
-        bricks2.push_back(rect);
-}
-for(int i=0;i<(int)row3.size();i++){
-    Rectangle rect = {100 + (i * 110), 180, 100, 50};
-      DrawRectangle(rect.x, rect.y, rect.width, rect.height, BLUE);
-    DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, WHITE);
-    bricks3.push_back(rect);
-    
 
-    
 
-}
+
 
 //points
 DrawRectangle(0, 0, 50, 100, BLACK);
 DrawText(TextFormat("%d", score), 25, 0, GetScreenWidth() / 30, WHITE);
 
         //player
-        Rectangle player = {player_x, GetScreenHeight() - 20, GetScreenWidth() / 5, 200};
        DrawRectangle(player_x, player.y, player.width, player.height, player_color);
 
        //ball
        DrawCircleGradient(ball_x, ball_y, GetScreenHeight() / 20, PINK, PURPLE);
-      Rectangle ball = {ball_x, ball_y,GetScreenHeight() / 20, GetScreenHeight() / 20};
    DrawRectangleLines(ball.x, ball.y, ball.width, ball.height, WHITE);
 
       //detect ball/player collision, invert direction and increase ball speed
@@ -183,8 +288,6 @@ DrawText(TextFormat("%d", score), 25, 0, GetScreenWidth() / 30, WHITE);
 
       //detect ball brick collision 
   
-
-
 
       //if ball hits any corner,invert direction and reset speed
       if(ball_y < 1){
@@ -209,7 +312,12 @@ DrawText(TextFormat("%d", score), 25, 0, GetScreenWidth() / 30, WHITE);
        
       }
 
+//game is paused so say paused and quit instructionssssssss 
+if(!game){
+DrawText("PAUSED", GetScreenWidth() / 4.7, GetScreenHeight() / 3.5, GetScreenWidth() / 7, WHITE);
+DrawText("PRESS F12 TO QUIT OR ESC TO KEEP PLAYING.", GetScreenWidth() / 7.5, GetScreenHeight() / 1.5, GetScreenWidth() / 32, WHITE);
 
+}
    EndDrawing();
    if(IsKeyDown(KEY_RIGHT) && player_x < GetScreenHeight() * 1.4){
      player_x += speed;
