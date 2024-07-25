@@ -9,3 +9,15 @@ The game background comes from https://freepik.com.
 
 The song sonderland, is an original and is available on [Bandcamp](https://tyfee.bandcamp.com/track/sonderland)
 
+# Compiling it yourslef
+
+In order to compile the source code into a binary file, you will need to have the Raylib installed and compile it as well, getting something like: 
+
+`g++ -o main main.cpp -lraylib`
+
+To compile it into a windows executable, you will need to cross compile it including the necessary libraries, i do it using MinGW like the following: 
+
+`x86_64-w64-mingw32-g++ main.cpp -o raybrick.exe -I<RAYLIB_INCLUDE_PATH> -L<RAYLIB_BUILD_PATH> -lraylib -lopengl32 -lgdi32 -lwinmm`
+
+
+
