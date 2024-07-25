@@ -1,7 +1,7 @@
 # What is it
 Raybrick is a breakout game built with the raylib library in C++. There are available binaries for Linux and Windows.
 
-| ![Debian 12 Menu Screen](ttps://github.com/Tyfee/raybrick/blob/main/screenshots/main_menu_debian.png) | ![Debian 12 Game Screen](https://github.com/Tyfee/raybrick/blob/main/screenshots/game_debian.png) |
+| ![Debian 12 Menu Screen](https://github.com/Tyfee/raybrick/blob/main/screenshots/main_menu_debian.png) | ![Debian 12 Game Screen](https://github.com/Tyfee/raybrick/blob/main/screenshots/game_debian.png) |
 |--|--|
 |![Debian 12 Paused Screen](https://github.com/Tyfee/raybrick/blob/main/screenshots/paused_debian.png)  |  ![enter image description here](https://images.prismic.io/hatica/1c408ef0-4190-4e03-b76d-a01a2df82a93_Screenshot+2023-03-14+at+12.42.51+PM.png?auto=compress,format&rect=0,0,1521,620&w=1200&h=489)|
 
